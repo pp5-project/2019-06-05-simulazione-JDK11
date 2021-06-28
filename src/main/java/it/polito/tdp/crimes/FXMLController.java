@@ -25,13 +25,13 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxAnno"
-    private ComboBox<?> boxAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxMese"
-    private ComboBox<?> boxMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxGiorno"
-    private ComboBox<?> boxGiorno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxGiorno; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnCreaReteCittadina"
     private Button btnCreaReteCittadina; // Value injected by FXMLLoader
@@ -47,12 +47,24 @@ public class FXMLController {
 
     @FXML
     void doCreaReteCittadina(ActionEvent event) {
-
+    	int anno=boxAnno.getValue();
+    	boxMese.getItems().addAll(model.mese(anno+""));
+    	boxGiorno.getItems().addAll(model.giorni(anno+""));
+    	model.CreaGrafo();
+    	txtResult.appendText("#vertici: "+model.nvertci()+"\n");
+    	txtResult.appendText("#vertici: "+model.nArchi()+"\n");
+    	txtResult.appendText(model.vicini());
     }
 
     @FXML
     void doSimula(ActionEvent event) {
-
+    	try {
+    	Integer N=Integer.parseInt(txtN.getText());
+    	} catch(NumberFormatException n) {
+    		txtResult.setText("Inserisci numero");
+    	}
+    	
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -69,5 +81,7 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	boxAnno.getItems().addAll(model.ListAnni());
+    
     }
 }
